@@ -61,10 +61,22 @@ ButtonMouseArea {
             GlobalStates.overviewOpen = !GlobalStates.overviewOpen;
     }
     onWheel: event => {
+        const current = Number(HyprlandData.activeWorkspace?.id ?? 1);
+        let target = current;
+
         if (event.angleDelta.y < 0)
-            WM.switchWorkspaceRelative("next");
+            target = current + 1;
         else if (event.angleDelta.y > 0)
-            WM.switchWorkspaceRelative("prev");
+            target = current - 1;
+        else
+            return;
+
+        target = Math.max(1, Math.min(8, target));
+
+        if (target !== current)
+            Hyprland.dispatch(`hl.dsp.focus({ workspace = ${target} })`);
+
+        event.accepted = true;
     }
 
     // Indications

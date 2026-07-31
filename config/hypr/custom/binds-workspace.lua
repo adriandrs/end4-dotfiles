@@ -7,8 +7,21 @@ local function wsStep(delta)
     hl.dispatch(hl.dsp.focus({ workspace = tostring(target) }))
 end
 
+
 hl.bind("SUPER + mouse_down", function() wsStep(1) end)
 hl.bind("SUPER + mouse_up", function() wsStep(-1) end)
+
+-- CTRL+SUPER+flechas: workspaces limitados al mismo rango que el scroll.
+hl.unbind("CTRL + SUPER + Left")
+hl.unbind("CTRL + SUPER + Right")
+
+hl.bind("CTRL + SUPER + Left", function()
+    wsStep(-1)
+end, { description = "Workspace: Focus left, bounded" })
+
+hl.bind("CTRL + SUPER + Right", function()
+    wsStep(1)
+end, { description = "Workspace: Focus right, bounded" })
 
 hl.bind("ALT + Space", hl.dsp.exec_cmd("vicinae toggle"),
     { description = "Lanzador vicinae" })

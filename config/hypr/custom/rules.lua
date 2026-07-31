@@ -7,3 +7,6 @@ hl.window_rule({
 })
 
 
+
+-- Blur en las capas del shell (usa el mismo decoration:blur global)
+hl.layer_rule({ match = { namespace = "quickshell.*" }, blur = true })

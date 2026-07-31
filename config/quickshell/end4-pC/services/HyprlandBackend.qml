@@ -14,7 +14,12 @@ Scope {
     property var focusedMonitor: Hyprland.focusedMonitor
 
     function switchWorkspaceRelative(direction) {
-        Hyprland.dispatch(`hl.dsp.focus({workspace = "r${direction === "next" ? "+1" : "-1"}"})`);
+        const current = Number(HyprlandData.activeWorkspace?.id ?? 1);
+        const delta = direction === "next" ? 1 : -1;
+        const target = Math.max(1, Math.min(10, current + delta));
+
+        if (target !== current)
+            Hyprland.dispatch(`hl.dsp.focus({ workspace = ${target} })`);
     }
     function normalizeWindow(w) {
         return {

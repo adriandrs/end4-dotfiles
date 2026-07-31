@@ -1,13 +1,14 @@
-hl.config({ decoration = { active_opacity = 0.85 } })
-hl.config({ decoration = { inactive_opacity = 0.85 } })
-hl.config({ decoration = { blur = { size = 8 } } })
-hl.config({ decoration = { blur = { passes = 5 } } })
+-- Se carga despues de shellOverrides: aqui ganan estos valores.
+-- Solo afecta VENTANAS. La transparencia del shell va en
+-- ~/.config/illogical-impulse/config.json (appearance.transparency)
 hl.config({
   general = {
     gaps_in = 2,
     gaps_out = 10,
   },
   decoration = {
-    -- lo que ya tenías de blur y opacidad
+    active_opacity = 0.85,
+    inactive_opacity = 0.85,
+    blur = { size = 8, passes = 5 },
   },
 })

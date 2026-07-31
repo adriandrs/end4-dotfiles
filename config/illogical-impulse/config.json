@@ -35,8 +35,8 @@
     },
     "transparency": {
       "automatic": false,
-      "backgroundTransparency": 0.11,
-      "contentTransparency": 0.57,
+      "backgroundTransparency": 0.2,
+      "contentTransparency": 0.9,
       "enable": true
     },
     "wallpaperTheming": {
@@ -80,7 +80,7 @@
       "workspaceZoom": 1
     },
     "thumbnailPath": "",
-    "wallpaperPath": "/home/ads/Downloads/François_Lemoyne_-_L'Apothéose_d'Hercule_-_Google_Art_Project.jpg",
+    "wallpaperPath": "/home/ads/Downloads/dan-otis-OYFHT4X5isg-unsplash.jpg",
     "widgets": {
       "clock": {
         "cookie": {
@@ -119,8 +119,8 @@
         "showOnlyWhenLocked": false,
         "style": "digital",
         "styleLocked": "cookie",
-        "x": 146,
-        "y": 696.4296875
+        "x": 139.0234375,
+        "y": 775.078125
       },
       "weather": {
         "enable": false,
@@ -142,7 +142,7 @@
     },
     "borderless": true,
     "bottom": false,
-    "cornerStyle": 2,
+    "cornerStyle": 0,
     "floatStyleShadow": true,
     "indicators": {
       "notifications": {

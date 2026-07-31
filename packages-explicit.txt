@@ -482,6 +482,7 @@ xdg-desktop-portal-wlr
 xf86-video-amdgpu
 xfsprogs
 xl2tpd
+xorg-xhost
 xsettingsd
 yay-bin
 yazi

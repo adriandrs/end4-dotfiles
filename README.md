@@ -303,9 +303,10 @@ The only place upstream is touched. Re-check this when updating end-4:
 
 - `quickshell/ii/modules/ii/overview/` — custom modes: current-workspace live
   window previews plus the original workspace grid, with a pill to switch.
+- `quickshell/ii/modules/ii/bar/Workspaces.qml` — workspace-bar scrolling is clamped to workspaces 1–8.
+- `quickshell/end4-pC/modules/ii/bar/Workspaces.qml` — applies the same workspace-scroll limit to the alternate shell.
 
-Everything else — all of `hypr/hyprland/`, the rest of `quickshell/ii/` — is
-unmodified.
+Everything else under `hypr/hyprland/` remains unmodified.
 
 ---
 

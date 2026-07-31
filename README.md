@@ -297,7 +297,24 @@ install.sh                restore this repository into a home directory
 sync.sh                   copy a live home directory back into this repository
 ```
 
-### Modified upstream files
+### TODO
+
+Investigate whether the workspace scroll limit can be implemented through
+End-4's customization/override mechanism instead of patching upstream
+components.
+
+Current upstream patches:
+
+- `config/quickshell/ii/modules/ii/bar/Workspaces.qml`
+- `config/quickshell/end4-pC/modules/ii/bar/Workspaces.qml`
+
+Goal:
+
+- Keep all custom behavior in `custom/` or override files.
+- Avoid modifying upstream components whenever possible.
+- Preserve easier upstream updates.
+
+## Modified upstream files
 
 The only place upstream is touched. Re-check this when updating end-4:
 

@@ -297,31 +297,16 @@ install.sh                restore this repository into a home directory
 sync.sh                   copy a live home directory back into this repository
 ```
 
-### TODO
+### Modified upstream files
 
-Investigate whether the workspace scroll limit can be implemented through
-End-4's customization/override mechanism instead of patching upstream
-components.
+The only upstream components intentionally patched. Re-check these when updating End-4:
 
-Current upstream patches:
-
-- `config/quickshell/ii/modules/ii/bar/Workspaces.qml`
-- `config/quickshell/end4-pC/modules/ii/bar/Workspaces.qml`
-
-Goal:
-
-- Keep all custom behavior in `custom/` or override files.
-- Avoid modifying upstream components whenever possible.
-- Preserve easier upstream updates.
-
-## Modified upstream files
-
-The only place upstream is touched. Re-check this when updating end-4:
-
-- `quickshell/ii/modules/ii/overview/` — custom modes: current-workspace live
-  window previews plus the original workspace grid, with a pill to switch.
+- `quickshell/ii/modules/ii/overview/` — custom modes: current-workspace live window previews plus the original workspace grid, with a pill to switch.
 - `quickshell/ii/modules/ii/bar/Workspaces.qml` — workspace-bar scrolling is clamped to workspaces 1–8.
 - `quickshell/end4-pC/modules/ii/bar/Workspaces.qml` — applies the same workspace-scroll limit to the alternate shell.
+
+At the moment, End-4 does not expose an override mechanism for replacing this
+component, so these patches are maintained as intentional upstream modifications.
 
 Everything else under `hypr/hyprland/` remains unmodified.
 

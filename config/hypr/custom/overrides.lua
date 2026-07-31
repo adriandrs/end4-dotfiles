@@ -12,3 +12,10 @@ hl.config({
     blur = { size = 8, passes = 5 },
   },
 })
+
+-- BEGIN CAELESTIA ANIMATIONS
+-- Loaded after End-4 configuration so these animation values take priority.
+if is_file_exists(HOME .. "/.config/hypr/custom/animations.lua") then
+    require("custom.animations")
+end
+-- END CAELESTIA ANIMATIONS

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Sefirah
+Comment=Seamless Device Linking
+Exec=sefirah
+Icon=Sefirah
+StartupWMClass=shrimqy.Seki-PhoneLink
+Terminal=false
+Type=Application
+Categories=Utility;

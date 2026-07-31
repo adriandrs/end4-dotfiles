@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+set -u
+
+REAL_FASTFETCH="/usr/bin/fastfetch"
+PALETTE="$HOME/.local/state/quickshell/user/generated/colors.json"
+
+# Si End-4 todavía no generó la paleta, abrir Fastfetch normalmente.
+if [[ ! -r "$PALETTE" ]] || ! command -v jq >/dev/null 2>&1; then
+    exec "$REAL_FASTFETCH" "$@"
+fi
+
+read_color() {
+    local key="$1"
+    local fallback="$2"
+    local value
+
+    value="$(jq -r --arg key "$key" '.[$key] // empty' "$PALETTE" 2>/dev/null)"
+
+    if [[ "$value" =~ ^#[0-9A-Fa-f]{6}$ ]] || [[ "$value" =~ ^#[0-9A-Fa-f]{3}$ ]]; then
+        printf '%s' "$value"
+    else
+        printf '%s' "$fallback"
+    fi
+}
+
+PRIMARY="$(read_color primary '#89b4fa')"
+SECONDARY="$(read_color secondary '#b4befe')"
+TERTIARY="$(read_color tertiary '#cba6f7')"
+ON_BACKGROUND="$(read_color on_background '#cdd6f4')"
+OUTLINE="$(read_color outline '#7f849c')"
+
+exec "$REAL_FASTFETCH" \
+    --logo-type file \
+    --logo "$HOME/.config/fastfetch/logos/ads-v15.txt" \
+    --logo-color-1 "$PRIMARY" \
+    --logo-color-2 "$SECONDARY" \
+    --logo-color-3 "$TERTIARY" \
+    --logo-color-4 "$ON_BACKGROUND" \
+    --logo-color-5 "$OUTLINE" \
+    --logo-color-6 "$PRIMARY" \
+    --logo-color-7 "$SECONDARY" \
+    --color-title "$PRIMARY" \
+    --color-keys "$SECONDARY" \
+    --color-separator "$OUTLINE" \
+    --color-output "$ON_BACKGROUND" \
+    "$@"

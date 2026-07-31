@@ -1,0 +1,110 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+COLORS="$HOME/.local/state/quickshell/user/generated/colors.json"
+OUTPUT="$HOME/.config/btop/themes/end4.theme"
+
+[[ -f "$COLORS" ]] || {
+    echo "No existe: $COLORS" >&2
+    exit 1
+}
+
+command -v jq >/dev/null 2>&1 || {
+    echo "Falta jq. Instálalo con: sudo pacman -S jq" >&2
+    exit 1
+}
+
+get_color() {
+    jq -er --arg key "$1" '.[$key]' "$COLORS"
+}
+
+background="$(get_color background)"
+surface="$(get_color surface)"
+surface_low="$(get_color surface_container_low)"
+surface_high="$(get_color surface_container_high)"
+surface_highest="$(get_color surface_container_highest)"
+
+foreground="$(get_color on_background)"
+foreground_soft="$(get_color on_surface_variant)"
+outline="$(get_color outline)"
+outline_variant="$(get_color outline_variant)"
+
+primary="$(get_color primary)"
+primary_container="$(get_color primary_container)"
+secondary="$(get_color secondary)"
+secondary_container="$(get_color secondary_container)"
+tertiary="$(get_color tertiary)"
+tertiary_container="$(get_color tertiary_container)"
+
+error="$(get_color error)"
+error_container="$(get_color error_container)"
+
+mkdir -p "$(dirname "$OUTPUT")"
+
+tmp="$(mktemp "${OUTPUT}.XXXXXX")"
+trap 'rm -f "$tmp"' EXIT
+
+cat > "$tmp" <<THEME
+# Generado automáticamente desde colors.json de End-4
+
+# Vacío para conservar la transparencia de Kitty
+theme[main_bg]=""
+
+theme[main_fg]="$foreground"
+theme[title]="$primary"
+theme[hi_fg]="$foreground"
+theme[selected_bg]="$primary_container"
+theme[selected_fg]="$foreground"
+theme[inactive_fg]="$outline"
+theme[graph_text]="$foreground_soft"
+theme[meter_bg]="$surface_high"
+theme[proc_misc]="$secondary"
+
+theme[cpu_box]="$primary"
+theme[mem_box]="$secondary"
+theme[net_box]="$tertiary"
+theme[proc_box]="$primary"
+theme[div_line]="$outline_variant"
+
+theme[temp_start]="$tertiary"
+theme[temp_mid]="$secondary"
+theme[temp_end]="$error"
+
+theme[cpu_start]="$primary_container"
+theme[cpu_mid]="$primary"
+theme[cpu_end]="$foreground"
+
+theme[free_start]="$secondary_container"
+theme[free_mid]="$secondary"
+theme[free_end]="$foreground"
+
+theme[cached_start]="$tertiary_container"
+theme[cached_mid]="$tertiary"
+theme[cached_end]="$foreground"
+
+theme[available_start]="$surface_highest"
+theme[available_mid]="$primary"
+theme[available_end]="$foreground"
+
+theme[used_start]="$error_container"
+theme[used_mid]="$error"
+theme[used_end]="$foreground"
+
+theme[download_start]="$primary_container"
+theme[download_mid]="$primary"
+theme[download_end]="$foreground"
+
+theme[upload_start]="$tertiary_container"
+theme[upload_mid]="$tertiary"
+theme[upload_end]="$foreground"
+
+theme[process_start]="$surface_low"
+theme[process_mid]="$secondary"
+theme[process_end]="$foreground"
+THEME
+
+mv "$tmp" "$OUTPUT"
+trap - EXIT
+
+# Recargar cualquier instancia abierta de btop.
+pkill -USR2 -x btop 2>/dev/null || true

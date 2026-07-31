@@ -1,0 +1,9 @@
+[Unit]
+Description=Detectar cambios en la paleta generada por End-4
+
+[Path]
+PathModified=%h/.local/state/quickshell/user/generated/colors.json
+Unit=end4-btop-theme.service
+
+[Install]
+WantedBy=default.target

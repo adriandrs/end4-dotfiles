@@ -1,0 +1,7 @@
+[Unit]
+Description=Actualizar temas dinámicos de aplicaciones TUI desde End-4
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/end4-btop-theme
+ExecStart=%h/.local/bin/end4-cava-theme

@@ -1,0 +1,146 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+COLORS="$HOME/.local/state/quickshell/user/generated/colors.json"
+CONFIG="$HOME/.config/cava/config"
+
+[[ -f "$COLORS" ]] || {
+    echo "No existe: $COLORS" >&2
+    exit 1
+}
+
+[[ -f "$CONFIG" ]] || {
+    echo "No existe la configuración de Cava: $CONFIG" >&2
+    echo "Ejecuta cava una vez y vuelve a intentar." >&2
+    exit 1
+}
+
+command -v jq >/dev/null 2>&1 || {
+    echo "Falta jq. Instálalo con: sudo pacman -S jq" >&2
+    exit 1
+}
+
+color() {
+    jq -er --arg key "$1" '.[$key]' "$COLORS"
+}
+
+background="$(color background)"
+foreground="$(color on_background)"
+
+primary_container="$(color primary_container)"
+tertiary_container="$(color tertiary_container)"
+secondary_container="$(color secondary_container)"
+outline="$(color outline)"
+tertiary="$(color tertiary)"
+secondary="$(color secondary)"
+primary="$(color primary)"
+bright="$(color on_background)"
+
+tmp="$(mktemp "${CONFIG}.XXXXXX")"
+trap 'rm -f "$tmp"' EXIT
+
+python3 - "$CONFIG" "$tmp" \
+    "$background" "$foreground" \
+    "$primary_container" "$tertiary_container" \
+    "$secondary_container" "$outline" \
+    "$tertiary" "$secondary" "$primary" "$bright" <<'PY'
+import re
+import sys
+from pathlib import Path
+
+(
+    source_path,
+    output_path,
+    background,
+    foreground,
+    c1,
+    c2,
+    c3,
+    c4,
+    c5,
+    c6,
+    c7,
+    c8,
+) = sys.argv[1:]
+
+source = Path(source_path).read_text(encoding="utf-8")
+lines = source.splitlines()
+
+managed_keys = {
+    "background",
+    "foreground",
+    "gradient",
+    "gradient_count",
+}
+
+managed_pattern = re.compile(
+    r"^\s*(background|foreground|gradient|gradient_count|"
+    r"gradient_color_\d+)\s*="
+)
+
+dynamic_lines = [
+    "background = default",
+    f"foreground = '{foreground}'",
+    "",
+    "gradient = 1",
+    "gradient_count = 8",
+    f"gradient_color_1 = '{c1}'",
+    f"gradient_color_2 = '{c2}'",
+    f"gradient_color_3 = '{c3}'",
+    f"gradient_color_4 = '{c4}'",
+    f"gradient_color_5 = '{c5}'",
+    f"gradient_color_6 = '{c6}'",
+    f"gradient_color_7 = '{c7}'",
+    f"gradient_color_8 = '{c8}'",
+]
+
+result = []
+inside_color = False
+color_found = False
+inserted = False
+
+for line in lines:
+    section = re.match(r"^\s*\[([^\]]+)\]\s*$", line)
+
+    if section:
+        if inside_color and not inserted:
+            result.extend(dynamic_lines)
+            result.append("")
+            inserted = True
+
+        inside_color = section.group(1).strip().lower() == "color"
+
+        if inside_color:
+            color_found = True
+
+        result.append(line)
+        continue
+
+    if inside_color and managed_pattern.match(line):
+        continue
+
+    result.append(line)
+
+if inside_color and not inserted:
+    result.extend(dynamic_lines)
+    inserted = True
+
+if not color_found:
+    if result and result[-1].strip():
+        result.append("")
+    result.append("[color]")
+    result.extend(dynamic_lines)
+
+Path(output_path).write_text(
+    "\n".join(result).rstrip() + "\n",
+    encoding="utf-8",
+)
+PY
+
+mv "$tmp" "$CONFIG"
+trap - EXIT
+
+# Cava recarga únicamente los colores, sin reiniciar el audio.
+
+sleep 0.4
+pkill -USR1 -x cava 2>/dev/null || true

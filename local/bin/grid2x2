@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+case "$1" in
+  on)  systemctl --user enable --now grid2x2.service && echo "grid2x2: ON (2x2 con 4 ventanas)" ;;
+  off) systemctl --user disable --now grid2x2.service && echo "grid2x2: OFF (dwindle default)" ;;
+  status|"") systemctl --user is-active --quiet grid2x2.service && echo "grid2x2: ON" || echo "grid2x2: OFF" ;;
+  *)   if systemctl --user is-active --quiet grid2x2.service; then "$0" off; else "$0" on; fi ;;
+esac

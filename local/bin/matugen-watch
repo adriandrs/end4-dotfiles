@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+WALL="$HOME/Wallpapers/random_wallpaper.png"
+
+while inotifywait -e close_write,moved_to "$WALL"; do
+    matugen image "$WALL"
+done
+

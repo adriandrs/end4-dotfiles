@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# gnome-control-center se niega a correr fuera de GNOME.
+# Solo esta invocacion ve la variable; el resto de la sesion no.
+exec env XDG_CURRENT_DESKTOP=GNOME /usr/bin/gnome-control-center "$@"

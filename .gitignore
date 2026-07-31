@@ -1,0 +1,34 @@
+*.log
+*.tmp
+*.bak
+*.old
+*.disabled
+*~
+.DS_Store
+
+# Cachés
+cache/
+.cache/
+__pycache__/
+
+# Archivos potencialmente sensibles
+secrets*
+credentials*
+tokens*
+api_keys*
+*.pem
+*.key
+*.before-*
+*.antes-*
+*.backup
+*.backup-*
+
+# Respaldos manuales de edición
+*.before-*
+*.antes-*
+*.backup
+*.backup-*
+config/illogical-impulse/installed_listfile
+config/illogical-impulse/installed_true
+*.save
+*.save.*

@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+K=~/.config/hypr/hyprland/keybinds.lua
+F=~/.local/state/grid2x2drag
+on() {
+  sed -i "/window.drag()/s|^hl.bind|-- hl.bind|" "$K"
+  mkdir -p ~/.local/state; touch "$F"; hyprctl reload
+  echo "grid2x2drag: ON (swap en cuadricula de 4)"
+}
+off() {
+  sed -i "/window.drag()/s|^-- hl.bind|hl.bind|" "$K"
+  rm -f "$F"; hyprctl reload
+  echo "grid2x2drag: OFF (drag default de end4)"
+}
+case "$1" in
+  on) on ;;
+  off) off ;;
+  status|"") [ -f "$F" ] && echo "grid2x2drag: ON" || echo "grid2x2drag: OFF" ;;
+  *) [ -f "$F" ] && off || on ;;
+esac

@@ -81,7 +81,7 @@ end
 
 -- Clic central corto: cerrar solo la ventana debajo del cursor.
 hl.bind(
-   "CTRL + SHIFT + ALT + mouse:274",
+   "mouse:274",
    function()
       -- El dock y la barra son capas: Hyprland no las ve, asi que
       -- cerraria la ventana de abajo. Ceder el clic a quickshell.
@@ -125,6 +125,7 @@ hl.bind(
    {
       mouse = true,
       click = true,
+      non_consuming = true,
       description = "Window: Close strictly under cursor"
    }
 )

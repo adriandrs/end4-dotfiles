@@ -34,3 +34,5 @@ config/illogical-impulse/installed_true
 *.save.*
 local/share/applications/steam-app-*.desktop
 local/share/applications/steam-app-*.desktop
+
+config/hypr/.backups/

@@ -246,6 +246,7 @@ kde-gtk-config
 kdeconnect
 kdegraphics-thumbnailers
 kdialog
+keyd
 kinfocenter
 kio-admin
 konsole

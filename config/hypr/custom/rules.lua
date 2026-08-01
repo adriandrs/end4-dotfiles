@@ -16,3 +16,14 @@ hl.layer_rule({ match = { namespace = "quickshell:popup" }, blur = true })
 hl.layer_rule({ match = { namespace = "quickshell:mediaControls" }, ignore_alpha = 0 })
 hl.layer_rule({ match = { namespace = "quickshell:mediaControls" }, blur = true })
 hl.layer_rule({ match = { namespace = "quickshell:popup" }, ignore_alpha = 0.4 })
+
+-- PiP de Zen: forzar flotante y tamaño inicial propio (no el del navegador)
+hl.window_rule({
+    match = {
+        class = "zen",
+        initial_title = "Picture-in-Picture"
+    },
+    float = true,
+    size = { 480, 270 },
+    max_size = { 960, 540 }
+})

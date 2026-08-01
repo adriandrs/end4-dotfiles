@@ -30,6 +30,7 @@ illogical-impulse-screencapture
 illogical-impulse-toolkit
 illogical-impulse-widgets
 networkmanager-dmenu-git
+opensnitch-git
 overskride
 papirus-folders
 penpot-desktop-bin

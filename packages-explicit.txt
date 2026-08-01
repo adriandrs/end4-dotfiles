@@ -116,6 +116,8 @@ figma-linux-bin
 file-roller
 filelight
 firefox
+firewall-config
+firewalld
 flatpak
 flite
 foomatic-db
@@ -285,7 +287,6 @@ micro
 mission-center
 mkinitcpio
 modemmanager
-modrinth-app
 mpvpaper
 mtools
 mullvad-vpn
@@ -318,6 +319,7 @@ openai-codex
 opencl-headers
 opencl-mesa
 opencode
+opensnitch-git
 openssh
 orca
 os-prober

@@ -74,6 +74,7 @@ cli11
 cloc
 clpeak
 cmatrix
+codex-desktop
 conky
 cpupower
 cryptsetup

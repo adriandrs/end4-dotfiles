@@ -85,7 +85,7 @@
             "workspaceZoom": 1
         },
         "thumbnailPath": "",
-        "wallpaperPath": "/home/ads/Downloads/dan-otis-OYFHT4X5isg-unsplash.jpg",
+        "wallpaperPath": "/home/ads/Downloads/François_Lemoyne_-_L'Apothéose_d'Hercule_-_Google_Art_Project.jpg",
         "wallpaperTransition": "fade",
         "wallpaperTransitionDuration": 1000,
         "widgets": {
@@ -140,7 +140,7 @@
     "bar": {
         "activeWindow": {
             "maxWidth": 320,
-            "showAppName": false,
+            "showAppName": true,
             "titleFullText": false,
             "titleMaxChars": 28
         },

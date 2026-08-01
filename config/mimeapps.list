@@ -30,6 +30,7 @@ application/x-7z-compressed=org.gnome.FileRoller.desktop
 application/vnd.rar=org.gnome.FileRoller.desktop
 application/pdf=org.gnome.Papers.desktop
 inode/directory=org.gnome.Nautilus.desktop
+x-scheme-handler/codex=codex-desktop.desktop
 
 [Added Associations]
 x-scheme-handler/http=zen.desktop;

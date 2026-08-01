@@ -5,6 +5,7 @@ antigravity-ide
 caelestia-cli
 caelestia-firefox-theme
 caelestia-shell
+codex-desktop
 darkly-bin
 docker-desktop
 figma-linux-bin

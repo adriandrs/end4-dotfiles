@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Sidebars de end4-pC — alterna entre el panel de ii y el de end4-pC (en caliente)
+set -euo pipefail
+F="$HOME/.config/illogical-impulse/config.json"
+K='.sidebar.usePc'
+cur=$(jq -r "$K // false" "$F")
+case "${1:-toggle}" in
+  on)     new=true ;;
+  off)    new=false ;;
+  toggle) [ "$cur" = "true" ] && new=false || new=true ;;
+  status) echo "$K = $cur"; exit 0 ;;
+  *) echo "uso: $(basename "$0") on|off|toggle|status"; exit 1 ;;
+esac
+tmp=$(mktemp)
+jq "$K = $new" "$F" > "$tmp" && mv "$tmp" "$F"
+echo "$K -> $new"

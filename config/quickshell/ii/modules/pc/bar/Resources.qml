@@ -1,0 +1,182 @@
+import qs.modules.pc
+import qs.services
+import qs.modules.common
+import qs.modules.pc.widgets
+import QtQuick
+import QtQuick.Layouts
+
+BarWidgetSwitcherArea {
+    id: root
+    property bool alwaysShowAllResources: false
+    horizontalExtraPadding: 12
+
+    hoverEnabled: !PcConfig.options.bar.tooltips.clickToShow
+
+    rowDefault: Component {
+        RowLayout {
+            spacing: 0
+            Resource {
+                iconName: "memory"
+                shown: PcConfig.options.bar.resources.alwaysShowRam
+                percentage: ResourceUsage.memoryUsedPercentage
+                warningThreshold: PcConfig.options.bar.resources.memoryWarningThreshold
+            }
+            Resource {
+                iconName: "planner_review"
+                shown: PcConfig.options.bar.resources.alwaysShowCpu
+                percentage: ResourceUsage.cpuUsage
+                Layout.leftMargin: shown ? 6 : 0
+                warningThreshold: PcConfig.options.bar.resources.cpuWarningThreshold
+            }
+            Resource {
+                iconName: "thermostat"
+                shown: PcConfig.options.bar.resources.alwaysShowCpuTemp
+                percentage: ResourceUsage.cpuTemp / 100
+                Layout.leftMargin: shown ? 6 : 0
+            }
+            Resource {
+                iconName: "hard_drive"
+                shown: PcConfig.options.bar.resources.alwaysShowDisk
+                percentage: ResourceUsage.diskUsedPercentage
+                Layout.leftMargin: shown ? 6 : 0
+            }
+            Resource {
+                iconName: "swap_horiz"
+                shown: PcConfig.options.bar.resources.alwaysShowSwap
+                percentage: ResourceUsage.swapUsedPercentage
+                Layout.leftMargin: shown ? 6 : 0
+                warningThreshold: PcConfig.options.bar.resources.swapWarningThreshold
+            }
+        }
+    }
+
+    rowMaterial: Component {
+        RowLayout {
+            spacing: 0
+            Resource {
+                iconName: "memory"
+                shown: PcConfig.options.bar.resources.alwaysShowRam
+                percentage: ResourceUsage.memoryUsedPercentage
+                warningThreshold: PcConfig.options.bar.resources.memoryWarningThreshold
+            }
+            Resource {
+                iconName: "planner_review"
+                shown: PcConfig.options.bar.resources.alwaysShowCpu
+                percentage: ResourceUsage.cpuUsage
+                Layout.leftMargin: shown ? 6 : 0
+                warningThreshold: PcConfig.options.bar.resources.cpuWarningThreshold
+            }
+            Resource {
+                iconName: "thermostat"
+                shown: PcConfig.options.bar.resources.alwaysShowCpuTemp
+                percentage: ResourceUsage.cpuTemp / 100
+                Layout.leftMargin: shown ? 6 : 0
+            }
+            Resource {
+                iconName: "hard_drive"
+                shown: PcConfig.options.bar.resources.alwaysShowDisk
+                percentage: ResourceUsage.diskUsedPercentage
+                Layout.leftMargin: shown ? 6 : 0
+            }
+            Resource {
+                iconName: "swap_horiz"
+                shown: PcConfig.options.bar.resources.alwaysShowSwap
+                percentage: ResourceUsage.swapUsedPercentage
+                Layout.leftMargin: shown ? 6 : 0
+                warningThreshold: PcConfig.options.bar.resources.swapWarningThreshold
+            }
+        }
+    }
+
+    colDefault: Component {
+        ColumnLayout {
+            spacing: 7
+            Resource {
+                Layout.alignment: Qt.AlignHCenter
+                iconName: "memory"
+                vertical: true
+                visible: PcConfig.options.bar.resources.alwaysShowRam
+                percentage: ResourceUsage.memoryUsedPercentage
+                warningThreshold: PcConfig.options.bar.resources.memoryWarningThreshold
+            }
+            Resource {
+                Layout.alignment: Qt.AlignHCenter
+                iconName: "planner_review"
+                vertical: true
+                visible: PcConfig.options.bar.resources.alwaysShowCpu
+                percentage: ResourceUsage.cpuUsage
+                warningThreshold: PcConfig.options.bar.resources.cpuWarningThreshold
+            }
+            Resource {
+                Layout.alignment: Qt.AlignHCenter
+                iconName: "thermostat"
+                vertical: true
+                visible: PcConfig.options.bar.resources.alwaysShowCpuTemp
+                percentage: ResourceUsage.cpuTemp / 100
+            }
+            Resource {
+                Layout.alignment: Qt.AlignHCenter
+                iconName: "hard_drive"
+                vertical: true
+                visible: PcConfig.options.bar.resources.alwaysShowDisk
+                percentage: ResourceUsage.diskUsedPercentage
+            }
+            Resource {
+                Layout.alignment: Qt.AlignHCenter
+                iconName: "swap_horiz"
+                vertical: true
+                visible: PcConfig.options.bar.resources.alwaysShowSwap
+                percentage: ResourceUsage.swapUsedPercentage
+                warningThreshold: PcConfig.options.bar.resources.swapWarningThreshold
+            }
+        }
+    }
+
+    colMaterial: Component {
+        ColumnLayout {
+            spacing: 7
+            Resource {
+                Layout.alignment: Qt.AlignHCenter
+                iconName: "memory"
+                vertical: true
+                visible: PcConfig.options.bar.resources.alwaysShowRam
+                percentage: ResourceUsage.memoryUsedPercentage
+                warningThreshold: PcConfig.options.bar.resources.memoryWarningThreshold
+            }
+            Resource {
+                Layout.alignment: Qt.AlignHCenter
+                iconName: "planner_review"
+                vertical: true
+                visible: PcConfig.options.bar.resources.alwaysShowCpu
+                percentage: ResourceUsage.cpuUsage
+                warningThreshold: PcConfig.options.bar.resources.cpuWarningThreshold
+            }
+            Resource {
+                Layout.alignment: Qt.AlignHCenter
+                iconName: "thermostat"
+                vertical: true
+                visible: PcConfig.options.bar.resources.alwaysShowCpuTemp
+                percentage: ResourceUsage.cpuTemp / 100
+            }
+            Resource {
+                Layout.alignment: Qt.AlignHCenter
+                iconName: "hard_drive"
+                vertical: true
+                visible: PcConfig.options.bar.resources.alwaysShowDisk
+                percentage: ResourceUsage.diskUsedPercentage
+            }
+            Resource {
+                Layout.alignment: Qt.AlignHCenter
+                iconName: "swap_horiz"
+                vertical: true
+                visible: PcConfig.options.bar.resources.alwaysShowSwap
+                percentage: ResourceUsage.swapUsedPercentage
+                warningThreshold: PcConfig.options.bar.resources.swapWarningThreshold
+            }
+        }
+    }
+
+    ResourcesPopup {
+        hoverTarget: root
+    }
+}

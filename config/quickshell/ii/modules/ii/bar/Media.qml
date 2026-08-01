@@ -16,7 +16,9 @@ Item {
     readonly property string cleanedTitle: StringUtils.cleanMusicTitle(activePlayer?.trackTitle) || Translation.tr("No media")
 
     Layout.fillHeight: true
-    implicitWidth: rowLayout.implicitWidth + rowLayout.spacing * 2
+    visible: !(Config.options.bar.chipDetails?.mediaHideWhenEmpty ?? false)
+        || (MprisController.activePlayer?.trackTitle?.length > 0)
+    implicitWidth: Math.min(rowLayout.implicitWidth + rowLayout.spacing * 2, Config.options.bar.media?.maxWidth ?? 280)
     implicitHeight: Appearance.sizes.barHeight
 
     Timer {
@@ -81,7 +83,9 @@ Item {
             horizontalAlignment: Text.AlignHCenter
             elide: Text.ElideRight // Truncates the text on the right
             color: Appearance.colors.colOnLayer1
-            text: `${cleanedTitle}${activePlayer?.trackArtist ? ' • ' + activePlayer.trackArtist : ''}`
+            text: (Config.options.bar.media?.onlyTitle ?? false)
+                ? cleanedTitle
+                : `${cleanedTitle}${activePlayer?.trackArtist ? ' • ' + activePlayer.trackArtist : ''}`
         }
 
     }

@@ -19,3 +19,4 @@ if is_file_exists(HOME .. "/.config/hypr/custom/animations.lua") then
     require("custom.animations")
 end
 -- END CAELESTIA ANIMATIONS
+

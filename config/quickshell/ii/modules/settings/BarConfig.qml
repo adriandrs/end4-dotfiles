@@ -8,6 +8,203 @@ ContentPage {
     forceWidth: true
 
     ContentSection {
+        icon: "tune"
+        title: Translation.tr("Chip details")
+
+        ConfigSwitch {
+            buttonIcon: "schedule"
+            text: Translation.tr("Clock: show time")
+            checked: Config.options.bar.chipDetails.clockShowTime
+            onCheckedChanged: {
+                Config.options.bar.chipDetails.clockShowTime = checked;
+            }
+        }
+
+        ConfigSwitch {
+            buttonIcon: "calendar_month"
+            text: Translation.tr("Clock: show date")
+            checked: Config.options.bar.chipDetails.clockShowDate
+            onCheckedChanged: {
+                Config.options.bar.chipDetails.clockShowDate = checked;
+            }
+        }
+
+        ConfigSwitch {
+            buttonIcon: "memory"
+            text: Translation.tr("Resources: RAM")
+            checked: Config.options.bar.chipDetails.resRam
+            onCheckedChanged: {
+                Config.options.bar.chipDetails.resRam = checked;
+            }
+        }
+
+        ConfigSwitch {
+            buttonIcon: "swap_horiz"
+            text: Translation.tr("Resources: swap")
+            checked: Config.options.bar.chipDetails.resSwap
+            onCheckedChanged: {
+                Config.options.bar.chipDetails.resSwap = checked;
+            }
+        }
+
+        ConfigSwitch {
+            buttonIcon: "planner_review"
+            text: Translation.tr("Resources: CPU")
+            checked: Config.options.bar.chipDetails.resCpu
+            onCheckedChanged: {
+                Config.options.bar.chipDetails.resCpu = checked;
+            }
+        }
+
+        ConfigSwitch {
+            buttonIcon: "music_off"
+            text: Translation.tr("Media: hide when nothing is playing")
+            checked: Config.options.bar.chipDetails.mediaHideWhenEmpty
+            onCheckedChanged: {
+                Config.options.bar.chipDetails.mediaHideWhenEmpty = checked;
+            }
+        }
+    }
+
+    ContentSection {
+        icon: "view_column"
+        title: Translation.tr("Sections (right-click the bar too)")
+
+        ConfigSwitch {
+            buttonIcon: "select_window"
+            text: Translation.tr("Show Active window")
+            checked: Config.options.bar.barWidgets.activeWindow
+            onCheckedChanged: {
+                Config.options.bar.barWidgets.activeWindow = checked;
+            }
+        }
+
+        ConfigSwitch {
+            buttonIcon: "memory"
+            text: Translation.tr("Show Resources")
+            checked: Config.options.bar.barWidgets.resources
+            onCheckedChanged: {
+                Config.options.bar.barWidgets.resources = checked;
+            }
+        }
+
+        ConfigSwitch {
+            buttonIcon: "music_note"
+            text: Translation.tr("Show Media")
+            checked: Config.options.bar.barWidgets.media
+            onCheckedChanged: {
+                Config.options.bar.barWidgets.media = checked;
+            }
+        }
+
+        ConfigSwitch {
+            buttonIcon: "grid_view"
+            text: Translation.tr("Show Workspaces")
+            checked: Config.options.bar.barWidgets.workspaces
+            onCheckedChanged: {
+                Config.options.bar.barWidgets.workspaces = checked;
+            }
+        }
+
+        ConfigSwitch {
+            buttonIcon: "schedule"
+            text: Translation.tr("Show Clock")
+            checked: Config.options.bar.barWidgets.clock
+            onCheckedChanged: {
+                Config.options.bar.barWidgets.clock = checked;
+            }
+        }
+
+        ConfigSwitch {
+            buttonIcon: "widgets"
+            text: Translation.tr("Show Utility buttons")
+            checked: Config.options.bar.barWidgets.utilButtons
+            onCheckedChanged: {
+                Config.options.bar.barWidgets.utilButtons = checked;
+            }
+        }
+
+        ConfigSwitch {
+            buttonIcon: "battery_full"
+            text: Translation.tr("Show Battery")
+            checked: Config.options.bar.barWidgets.battery
+            onCheckedChanged: {
+                Config.options.bar.barWidgets.battery = checked;
+            }
+        }
+    }
+
+    ContentSection {
+        icon: "music_note"
+        title: Translation.tr("Media")
+
+        ConfigSwitch {
+            buttonIcon: "title"
+            text: Translation.tr("Show only the title (hide artist)")
+            checked: Config.options.bar.media.onlyTitle
+            onCheckedChanged: {
+                Config.options.bar.media.onlyTitle = checked;
+            }
+        }
+
+        ConfigSpinBox {
+            text: Translation.tr("Max width (px)")
+            value: Config.options.bar.media.maxWidth
+            from: 120
+            to: 900
+            stepSize: 20
+            onValueChanged: {
+                Config.options.bar.media.maxWidth = value;
+            }
+        }
+    }
+
+    ContentSection {
+        icon: "select_window"
+        title: Translation.tr("Active window")
+
+        ConfigSwitch {
+            buttonIcon: "apps"
+            text: Translation.tr("Show app name")
+            checked: Config.options.bar.activeWindow.showAppName
+            onCheckedChanged: {
+                Config.options.bar.activeWindow.showAppName = checked;
+            }
+        }
+
+        ConfigSwitch {
+            buttonIcon: "notes"
+            text: Translation.tr("Show full title (no trimming)")
+            checked: Config.options.bar.activeWindow.titleFullText
+            onCheckedChanged: {
+                Config.options.bar.activeWindow.titleFullText = checked;
+            }
+        }
+
+        ConfigSpinBox {
+            text: Translation.tr("Title max characters")
+            value: Config.options.bar.activeWindow.titleMaxChars
+            from: 8
+            to: 200
+            stepSize: 2
+            onValueChanged: {
+                Config.options.bar.activeWindow.titleMaxChars = value;
+            }
+        }
+
+        ConfigSpinBox {
+            text: Translation.tr("Max width (px)")
+            value: Config.options.bar.activeWindow.maxWidth
+            from: 120
+            to: 900
+            stepSize: 20
+            onValueChanged: {
+                Config.options.bar.activeWindow.maxWidth = value;
+            }
+        }
+    }
+
+    ContentSection {
         icon: "notifications"
         title: Translation.tr("Notifications")
         ConfigSwitch {
@@ -167,6 +364,15 @@ ContentPage {
     ContentSection {
         icon: "widgets"
         title: Translation.tr("Utility buttons")
+
+        ConfigSwitch {
+            buttonIcon: "wallpaper"
+            text: Translation.tr("Show wallpaper button")
+            checked: Config.options.bar.utilButtons.showWallpaperToggle
+            onCheckedChanged: {
+                Config.options.bar.utilButtons.showWallpaperToggle = checked;
+            }
+        }
 
         ConfigRow {
             uniform: true

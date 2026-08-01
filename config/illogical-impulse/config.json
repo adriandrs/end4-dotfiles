@@ -70,7 +70,12 @@
     }
   },
   "background": {
+    "centeredWallpaper": false,
+    "centeredWallpaperOnlyWhenLocked": false,
+    "centeredWallpaperShape": "Cookie7Sided",
+    "centeredWallpaperSize": 520,
     "hideWhenFullscreen": true,
+    "lockWall": "",
     "parallax": {
       "autoVertical": false,
       "enableSidebar": false,
@@ -80,7 +85,9 @@
       "workspaceZoom": 1
     },
     "thumbnailPath": "",
-    "wallpaperPath": "/home/ads/Downloads/dan-otis-OYFHT4X5isg-unsplash.jpg",
+    "wallpaperPath": "/home/ads/Pictures/Wallpapers/adrianna-geo-1rBg5YSi00c-unsplash.jpg",
+    "wallpaperTransition": "fade",
+    "wallpaperTransitionDuration": 1000,
     "widgets": {
       "clock": {
         "cookie": {
@@ -131,6 +138,12 @@
     }
   },
   "bar": {
+    "activeWindow": {
+      "maxWidth": 320,
+      "showAppName": false,
+      "titleFullText": false,
+      "titleMaxChars": 30
+    },
     "autoHide": {
       "enable": false,
       "hoverRegionWidth": 2,
@@ -140,28 +153,65 @@
         "enable": true
       }
     },
+    "barWidgets": {
+      "activeWindow": true,
+      "battery": true,
+      "clock": true,
+      "media": true,
+      "resources": true,
+      "utilButtons": true,
+      "workspaces": true
+    },
     "borderless": true,
     "bottom": false,
+    "chipDetails": {
+      "clockShowDate": true,
+      "clockShowTime": true,
+      "mediaHideWhenEmpty": false,
+      "resCpu": true,
+      "resRam": true,
+      "resSwap": false
+    },
     "cornerStyle": 0,
+    "divider": {
+      "spacing": 20,
+      "style": "rect"
+    },
     "floatStyleShadow": true,
     "indicators": {
       "notifications": {
         "showUnreadCount": true
       }
     },
+    "layouts": {
+      "leftLayout": [
+        "workspaces"
+      ],
+      "middleLayout": [
+        "clockWidget"
+      ],
+      "rightLayout": [
+        "systemIcons"
+      ]
+    },
     "resources": {
       "alwaysShowCpu": true,
+      "alwaysShowCpuTemp": false,
+      "alwaysShowDisk": false,
+      "alwaysShowRam": false,
       "alwaysShowSwap": true,
       "cpuWarningThreshold": 90,
       "memoryWarningThreshold": 95,
+      "showValue": false,
       "swapWarningThreshold": 85
     },
     "screenList": [],
     "showBackground": true,
     "tooltips": {
-      "clickToShow": true
+      "clickToShow": false
     },
     "topLeftIcon": "spark",
+    "usePc": false,
     "utilButtons": {
       "showColorPicker": false,
       "showDarkModeToggle": true,
@@ -169,7 +219,8 @@
       "showMicToggle": false,
       "showPerformanceProfileToggle": true,
       "showScreenRecord": false,
-      "showScreenSnip": false
+      "showScreenSnip": false,
+      "showWallpaperToggle": false
     },
     "verbose": true,
     "vertical": false,
@@ -181,7 +232,7 @@
       "useUSCS": false
     },
     "workspaces": {
-      "alwaysShowNumbers": true,
+      "alwaysShowNumbers": false,
       "monochromeIcons": true,
       "numberMap": [
         "I",
@@ -239,6 +290,10 @@
   "crosshair": {
     "code": "0;P;d;1;0l;10;0o;2;1b;0"
   },
+  "custom": {
+    "colorizeIcon": true,
+    "distroIcon": ""
+  },
   "dock": {
     "enable": true,
     "height": 60,
@@ -251,10 +306,19 @@
       "org.kde.dolphin",
       "zen"
     ],
-    "pinnedOnStartup": false
+    "pinnedOnStartup": false,
+    "showBackground": true
   },
   "hacks": {
     "arbitraryRaceConditionDelay": 20
+  },
+  "hyprland": {
+    "decoration": {
+      "rounding": 22
+    },
+    "general": {
+      "gapsOut": 5
+    }
   },
   "interactions": {
     "deadPixelWorkaround": {
@@ -297,7 +361,8 @@
     "blur": {
       "enable": true,
       "extraZoom": 1.12,
-      "radius": 100
+      "radius": 100,
+      "size": 20
     },
     "centerClock": true,
     "launchOnStartup": false,
@@ -310,7 +375,10 @@
     "useHyprlock": false
   },
   "media": {
-    "filterDuplicatePlayers": true
+    "filterDuplicatePlayers": true,
+    "maxWidth": 280,
+    "minWidth": 0,
+    "onlyTitle": false
   },
   "musicRecognition": {
     "interval": 4,
@@ -355,6 +423,12 @@
   "policies": {
     "ai": 1,
     "weeb": 1
+  },
+  "profile": {
+    "avatarPath": "",
+    "avatarPicture": "",
+    "descriptionText": "::distro::",
+    "displayName": ""
   },
   "regionSelector": {
     "annotation": {
@@ -414,6 +488,8 @@
     "ai": {
       "textFadeIn": false
     },
+    "banner": false,
+    "bannerImage": "",
     "booru": {
       "allowNsfw": false,
       "defaultProvider": "yandere",
@@ -434,6 +510,7 @@
       "visualize": false
     },
     "keepRightSidebarLoaded": true,
+    "mediaPlayer": "",
     "quickSliders": {
       "enable": true,
       "showBrightness": true,
@@ -475,7 +552,8 @@
     "translator": {
       "delay": 300,
       "enable": true
-    }
+    },
+    "usePc": false
   },
   "sounds": {
     "battery": true,
@@ -545,6 +623,9 @@
     }
   },
   "wallpaperSelector": {
+    "changeInterval": 0,
+    "closeAfterSelection": false,
+    "columns": 4,
     "useSystemFileDialog": false
   },
   "windows": {

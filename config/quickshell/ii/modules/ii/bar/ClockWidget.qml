@@ -19,18 +19,19 @@ Item {
         StyledText {
             font.pixelSize: Appearance.font.pixelSize.large
             color: Appearance.colors.colOnLayer1
+            visible: Config.options.bar.chipDetails?.clockShowTime ?? true
             text: DateTime.time
         }
 
         StyledText {
-            visible: root.showDate
+            visible: root.showDate && (Config.options.bar.chipDetails?.clockShowDate ?? true)
             font.pixelSize: Appearance.font.pixelSize.small
             color: Appearance.colors.colOnLayer1
             text: "•"
         }
 
         StyledText {
-            visible: root.showDate
+            visible: root.showDate && (Config.options.bar.chipDetails?.clockShowDate ?? true)
             font.pixelSize: Appearance.font.pixelSize.small
             color: Appearance.colors.colOnLayer1
             text: DateTime.longDate

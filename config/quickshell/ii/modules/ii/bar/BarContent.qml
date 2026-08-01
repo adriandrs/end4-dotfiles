@@ -1,3 +1,4 @@
+import qs.modules.ii.barMenu
 import qs.modules.ii.bar.weather
 import QtQuick
 import QtQuick.Layouts
@@ -35,6 +36,16 @@ Item { // Bar content region
         }
     }
     // Background
+    MouseArea { // clic derecho -> menu de secciones
+        anchors.fill: barBackground
+        z: -1
+        acceptedButtons: Qt.RightButton
+        onPressed: event => {
+            const pt = mapToGlobal(event.x, event.y)
+            BarMenuState.openAt(root.QsWindow?.window?.screen ?? null, pt.x, pt.y)
+        }
+    }
+
     Rectangle {
         id: barBackground
         anchors {
@@ -94,7 +105,7 @@ Item { // Bar content region
                 Layout.rightMargin: Appearance.rounding.screenRounding
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                visible: root.useShortenedForm === 0
+                visible: (Config.options.bar.barWidgets?.activeWindow ?? true) && (root.useShortenedForm === 0)
             }
         }
     }
@@ -114,12 +125,13 @@ Item { // Bar content region
             implicitWidth: root.centerSideModuleWidth
 
             Resources {
+                visible: Config.options.bar.barWidgets?.resources ?? true
                 alwaysShowAllResources: root.useShortenedForm === 2
                 Layout.fillWidth: root.useShortenedForm === 2
             }
 
             Media {
-                visible: root.useShortenedForm < 2
+                visible: (Config.options.bar.barWidgets?.media ?? true) && (root.useShortenedForm < 2)
                 Layout.fillWidth: true
             }
         }
@@ -134,6 +146,7 @@ Item { // Bar content region
             padding: workspacesWidget.widgetPadding
 
             Workspaces {
+                visible: Config.options.bar.barWidgets?.workspaces ?? true
                 id: workspacesWidget
                 Layout.fillHeight: true
                 MouseArea {
@@ -169,18 +182,19 @@ Item { // Bar content region
                 anchors.fill: parent
 
                 ClockWidget {
+                    visible: Config.options.bar.barWidgets?.clock ?? true
                     showDate: (Config.options.bar.verbose && root.useShortenedForm < 2)
                     Layout.alignment: Qt.AlignVCenter
                     Layout.fillWidth: true
                 }
 
                 UtilButtons {
-                    visible: (Config.options.bar.verbose && root.useShortenedForm === 0)
+                    visible: (Config.options.bar.barWidgets?.utilButtons ?? true) && ((Config.options.bar.verbose && root.useShortenedForm === 0))
                     Layout.alignment: Qt.AlignVCenter
                 }
 
                 BatteryIndicator {
-                    visible: (root.useShortenedForm < 2 && Battery.available)
+                    visible: (Config.options.bar.barWidgets?.battery ?? true) && ((root.useShortenedForm < 2 && Battery.available))
                     Layout.alignment: Qt.AlignVCenter
                 }
             }

@@ -16,7 +16,14 @@ Item {
     property bool focusingThisMonitor: HyprlandData.activeWorkspace?.monitor == monitor?.name
     property var biggestWindow: HyprlandData.biggestWindowForWorkspace(HyprlandData.monitors[root.monitor?.id]?.activeWorkspace.id)
 
-    implicitWidth: colLayout.implicitWidth
+    readonly property var awCfg: Config.options.bar.activeWindow
+    function awClip(t) {
+        if (!t) return "";
+        if (awCfg?.titleFullText) return t;
+        const n = awCfg?.titleMaxChars ?? 40;
+        return t.length > n ? t.substring(0, n) + "…" : t;
+    }
+    implicitWidth: Math.min(colLayout.implicitWidth, awCfg?.maxWidth ?? 320)
 
     ColumnLayout {
         id: colLayout
@@ -28,6 +35,7 @@ Item {
 
         StyledText {
             Layout.fillWidth: true
+            visible: root.awCfg?.showAppName ?? true
             font.pixelSize: Appearance.font.pixelSize.smaller
             color: Appearance.colors.colSubtext
             elide: Text.ElideRight
@@ -42,9 +50,9 @@ Item {
             font.pixelSize: Appearance.font.pixelSize.small
             color: Appearance.colors.colOnLayer0
             elide: Text.ElideRight
-            text: root.focusingThisMonitor && root.activeWindow?.activated && root.biggestWindow ? 
+            text: root.awClip(root.focusingThisMonitor && root.activeWindow?.activated && root.biggestWindow ? 
                 root.activeWindow?.title :
-                (root.biggestWindow?.title) ?? `${Translation.tr("Workspace")} ${monitor?.activeWorkspace?.id ?? 1}`
+                (root.biggestWindow?.title) ?? `${Translation.tr("Workspace")} ${monitor?.activeWorkspace?.id ?? 1}`)
         }
 
     }

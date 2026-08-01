@@ -12,7 +12,7 @@ import Quickshell.Io
 
 MouseArea {
     id: root
-    property int columns: 4
+    property int columns: Config.options.wallpaperSelector?.columns ?? 4
     property real previewCellAspectRatio: 4 / 3
     property bool useDarkMode: Appearance.m3colors.darkmode
 
@@ -44,6 +44,8 @@ MouseArea {
         if (filePath && filePath.length > 0) {
             Wallpapers.select(filePath, root.useDarkMode);
             filterField.text = "";
+            if (Config.options.wallpaperSelector?.closeAfterSelection)
+                GlobalStates.wallpaperSelectorOpen = false;
         }
     }
 

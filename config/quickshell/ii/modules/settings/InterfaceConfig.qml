@@ -8,6 +8,52 @@ ContentPage {
     forceWidth: true
 
     ContentSection {
+        icon: "dock_to_bottom"
+        title: Translation.tr("Dock")
+
+        ConfigSwitch {
+            buttonIcon: "rectangle"
+            text: Translation.tr("Show dock background")
+            checked: Config.options.dock.showBackground
+            onCheckedChanged: {
+                Config.options.dock.showBackground = checked;
+            }
+        }
+    }
+
+    ContentSection {
+        icon: "lock"
+        title: Translation.tr("Lock screen blur")
+
+        ConfigSpinBox {
+            text: Translation.tr("Blur size")
+            value: Config.options.lock.blur.size
+            from: 2
+            to: 64
+            stepSize: 2
+            onValueChanged: {
+                Config.options.lock.blur.size = value;
+            }
+        }
+    }
+
+    ContentSection {
+        icon: "notifications"
+        title: Translation.tr("Notification popups")
+
+        ConfigSelectionArray {
+            currentValue: Config.options.notifications.position
+            onSelected: newValue => {
+                Config.options.notifications.position = newValue;
+            }
+            options: [
+                { displayName: Translation.tr("Right"), icon: "align_horizontal_right", value: "right" },
+                { displayName: Translation.tr("Left"),  icon: "align_horizontal_left",  value: "left"  }
+            ]
+        }
+    }
+
+    ContentSection {
         icon: "keyboard"
         title: Translation.tr("Cheat sheet")
 

@@ -1,0 +1,44 @@
+import qs.modules.pc
+import QtQuick
+import qs
+import qs.services
+import qs.modules.common
+import qs.modules.pc.widgets
+
+RippleButton {
+    id: root
+    property bool isMaterial: PcConfig.options.bar.cornerStyle === 3
+    property bool vertical: PcConfig.options.bar.vertical
+    property real buttonPadding: 5
+
+    implicitWidth: 32
+    implicitHeight: implicitWidth
+
+    buttonRadius: Appearance.rounding.full
+    colBackground: isMaterial ? Appearance.colors.colPrimary : "transparent"
+    colBackgroundHover: isMaterial ? Appearance.colors.colPrimaryHover : Appearance.colors.colLayer1Hover
+    colRipple: isMaterial ? Appearance.colors.colPrimaryActive : Appearance.colors.colLayer1Active
+
+    onPressed: {
+        GlobalStates.sessionOpen = !GlobalStates.sessionOpen
+    }
+
+    MaterialSymbol {
+        anchors.centerIn: parent
+        visible: !root.isMaterial
+        text: "power_settings_new"
+        iconSize: Appearance.font.pixelSize.larger
+        color: Appearance.colors.colOnLayer0
+    }
+
+    MaterialShapeWrappedMaterialSymbol {
+        anchors.centerIn: parent
+        visible: root.isMaterial
+        text: "power_settings_new"
+        iconSize: Appearance.font.pixelSize.normal
+        color: Appearance.colors.colOnPrimary
+        colSymbol: Appearance.colors.colPrimary
+        wrappedShape: MaterialShape.Shape.Cookie12Sided
+        padding: 2
+    }
+}

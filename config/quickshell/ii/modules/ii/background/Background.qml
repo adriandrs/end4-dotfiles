@@ -1,5 +1,6 @@
 pragma ComponentBehavior: Bound
 
+import qs.modules.ii.desktopMenu
 import qs
 import qs.services
 import qs.modules.common
@@ -41,7 +42,16 @@ Variants {
         property int totalWorkspaces: Math.ceil(lastWorkspaceId / workspaceChunkSize) * workspaceChunkSize
         // Wallpaper
         property bool wallpaperIsVideo: Config.options.background.wallpaperPath.endsWith(".mp4") || Config.options.background.wallpaperPath.endsWith(".webm") || Config.options.background.wallpaperPath.endsWith(".mkv") || Config.options.background.wallpaperPath.endsWith(".avi") || Config.options.background.wallpaperPath.endsWith(".mov")
-        property string wallpaperPath: wallpaperIsVideo ? Config.options.background.thumbnailPath : Config.options.background.wallpaperPath
+        property string basePath: wallpaperIsVideo ? Config.options.background.thumbnailPath : Config.options.background.wallpaperPath
+        property string wallpaperPath: (GlobalStates.screenLocked && (Config.options.background.lockWall ?? "") !== "")
+            ? Config.options.background.lockWall : basePath
+        // --- fondo centrado ---
+        readonly property bool centeredEnabled: (Config.options.background.centeredWallpaper ?? false)
+            && (!(Config.options.background.centeredWallpaperOnlyWhenLocked ?? false) || GlobalStates.screenLocked)
+        // --- Fade cruzado al cambiar de fondo ---
+        property string fadePrevSource: ""
+        readonly property string fadeTransitionKind: Config.options.background.wallpaperTransition ?? "fade"
+        readonly property int fadeTransitionMs: Config.options.background.wallpaperTransitionDuration ?? 1000
         property bool wallpaperSafetyTriggered: {
             const enabled = Config.options.workSafety.enable.wallpaper;
             const sensitiveWallpaper = (CF.StringUtils.stringListContainsSubstring(wallpaperPath.toLowerCase(), Config.options.workSafety.triggerCondition.fileKeywords));
@@ -94,6 +104,23 @@ Variants {
 
         onWallpaperPathChanged: {
             bgRoot.updateZoomScale();
+            if (!bgRoot.wallpaperSafetyTriggered && !bgRoot.wallpaperIsVideo
+                && bgRoot.fadePrevSource !== "" && bgRoot.fadePrevSource !== bgRoot.wallpaperPath) {
+                fadePrevImage.x = wallpaper.x
+                fadePrevImage.y = wallpaper.y
+                fadePrevImage.width = wallpaper.width
+                fadePrevImage.height = wallpaper.height
+                fadePrevImage.source = bgRoot.fadePrevSource.startsWith("/")
+                    ? "file://" + bgRoot.fadePrevSource : bgRoot.fadePrevSource
+                if (bgRoot.fadeTransitionKind !== "none") {
+                    fadeAnim.stop()
+                    fadePrevImage.opacity = 1.0
+                    fadePrevImage.scale = 1.0
+                    fadePrevImage.xOffset = 0
+                    fadeAnim.start()
+                }
+            }
+            bgRoot.fadePrevSource = bgRoot.wallpaperPath;
             // Clock position gets updated after zoom scale is updated
         }
 
@@ -127,10 +154,17 @@ Variants {
         Item {
             anchors.fill: parent
 
+            Timer { // rotacion automatica de fondo
+                interval: Math.max(1, Config.options.wallpaperSelector?.changeInterval ?? 0) * 60000
+                running: (Config.options.wallpaperSelector?.changeInterval ?? 0) > 0 && !GlobalStates.screenLocked
+                repeat: true
+                onTriggered: Wallpapers.randomFromCurrentFolder(Appearance.m3colors.darkmode)
+            }
+
             // Wallpaper
             StyledImage {
                 id: wallpaper
-                visible: opacity > 0 && !blurLoader.active
+                visible: opacity > 0 && !blurLoader.active && !bgRoot.centeredEnabled
                 opacity: (status === Image.Ready && !bgRoot.wallpaperIsVideo) ? 1 : 0
                 cache: false
                 smooth: false
@@ -198,6 +232,108 @@ Variants {
                 height: bgRoot.scaledWallpaperHeight
             }
 
+            StyledImage {
+                id: fadePrevImage
+                property real xOffset: 0
+                transform: Translate { x: fadePrevImage.xOffset }
+                visible: opacity > 0 && !blurLoader.active
+                opacity: 0
+                z: 1
+                cache: true
+                smooth: true
+                asynchronous: false
+                fillMode: Image.PreserveAspectCrop
+            }
+
+            ParallelAnimation {
+                id: fadeAnim
+                onFinished: {
+                    fadePrevImage.source = ""
+                    fadePrevImage.opacity = 0
+                    fadePrevImage.scale = 1.0
+                    fadePrevImage.xOffset = 0
+                }
+                // Opacidad: todas las variantes se desvanecen
+                NumberAnimation {
+                    target: fadePrevImage
+                    property: "opacity"
+                    from: 1.0
+                    to: 0.0
+                    duration: bgRoot.fadeTransitionKind === "blink"
+                        ? Math.round(bgRoot.fadeTransitionMs * 0.45)
+                        : bgRoot.fadeTransitionMs
+                    easing.type: bgRoot.fadeTransitionKind === "blink"
+                        ? Easing.OutQuad : Easing.InOutQuad
+                }
+                // Deslizar: la anterior se va hacia la izquierda
+                NumberAnimation {
+                    target: fadePrevImage
+                    property: "xOffset"
+                    from: 0
+                    to: bgRoot.fadeTransitionKind === "slide" ? -bgRoot.screen.width * 0.25 : 0
+                    duration: bgRoot.fadeTransitionMs
+                    easing.type: Easing.InOutCubic
+                }
+                // Zoom: la anterior se agranda un poco al salir
+                NumberAnimation {
+                    target: fadePrevImage
+                    property: "scale"
+                    from: 1.0
+                    to: bgRoot.fadeTransitionKind === "zoom" ? 1.06 : 1.0
+                    duration: bgRoot.fadeTransitionMs
+                    easing.type: Easing.OutCubic
+                }
+            }
+
+            Rectangle { // fondo solido detras de la figura
+                anchors.fill: parent
+                visible: opacity > 0
+                opacity: bgRoot.centeredEnabled ? 1 : 0
+                color: Appearance.colors.colPrimaryContainer
+                z: 2
+                Behavior on opacity {
+                    animation: Appearance.animation.elementMove.numberAnimation.createObject(this)
+                }
+            }
+
+            MaterialShape {
+                id: centeredWallpaperShapeItem
+                anchors.centerIn: parent
+                width: Config.options.background.centeredWallpaperSize ?? 520
+                height: width
+                z: 3
+                visible: opacity > 0
+                opacity: bgRoot.centeredEnabled ? 1 : 0
+                scale: bgRoot.centeredEnabled ? 1 : 1.3
+                color: Appearance.colors.colPrimaryContainer
+                shape: MaterialShape.Shape.Cookie7Sided
+                Behavior on opacity {
+                    animation: Appearance.animation.elementMove.numberAnimation.createObject(this)
+                }
+                Behavior on scale {
+                    animation: Appearance.animation.elementMove.numberAnimation.createObject(this)
+                }
+
+                layer.enabled: true
+                layer.effect: OpacityMask {
+                    maskSource: MaterialShape {
+                        width: centeredWallpaperShapeItem.width
+                        height: centeredWallpaperShapeItem.height
+                        shape: MaterialShape.Shape.Cookie7Sided
+                    }
+                }
+
+                StyledImage {
+                    anchors.fill: parent
+                    source: bgRoot.wallpaperSafetyTriggered ? "" : bgRoot.wallpaperPath
+                    fillMode: Image.PreserveAspectCrop
+                    cache: true
+                    asynchronous: true
+                    sourceSize.width: parent.width
+                    sourceSize.height: parent.height
+                }
+            }
+
             Loader {
                 id: blurLoader
                 active: Config.options.lock.blur.enable && (GlobalStates.screenLocked || scaleAnim.running)
@@ -214,7 +350,7 @@ Variants {
                 sourceComponent: GaussianBlur {
                     source: wallpaper
                     radius: GlobalStates.screenLocked ? Config.options.lock.blur.radius : 0
-                    samples: radius * 2 + 1
+                    samples: Config.options.lock.blur.size ?? (radius * 2 + 1)
 
                     Rectangle {
                         opacity: GlobalStates.screenLocked ? 1 : 0
@@ -276,6 +412,14 @@ Variants {
                         wallpaperSafetyTriggered: bgRoot.wallpaperSafetyTriggered
                     }
                 }
+            }
+        
+            // --- Clic derecho -> abre DesktopMenu ---
+            MouseArea {
+                anchors.fill: parent
+                z: -2
+                acceptedButtons: Qt.RightButton
+                onClicked: (mouse) => DesktopMenuState.openAt(bgRoot.screen, mouse.x, mouse.y)
             }
         }
     }

@@ -9,6 +9,7 @@ Item {
     required property double percentage
     property int warningThreshold: 100
     property bool shown: true
+    property bool userEnabled: true
     clip: true
     visible: width > 0 && height > 0
     implicitWidth: resourceRowLayout.x < 0 ? 0 : resourceRowLayout.implicitWidth
@@ -18,7 +19,7 @@ Item {
     RowLayout {
         id: resourceRowLayout
         spacing: 2
-        x: shown ? 0 : -resourceRowLayout.width
+        x: (shown && root.userEnabled) ? 0 : -resourceRowLayout.width
         anchors {
             verticalCenter: parent.verticalCenter
         }

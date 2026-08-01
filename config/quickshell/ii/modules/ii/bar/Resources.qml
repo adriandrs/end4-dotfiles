@@ -21,12 +21,14 @@ MouseArea {
 
         Resource {
             iconName: "memory"
+            userEnabled: Config.options.bar.chipDetails?.resRam ?? true
             percentage: ResourceUsage.memoryUsedPercentage
             warningThreshold: Config.options.bar.resources.memoryWarningThreshold
         }
 
         Resource {
             iconName: "swap_horiz"
+            userEnabled: Config.options.bar.chipDetails?.resSwap ?? true
             percentage: ResourceUsage.swapUsedPercentage
             shown: (Config.options.bar.resources.alwaysShowSwap && percentage > 0) || 
                 (MprisController.activePlayer?.trackTitle == null) ||
@@ -37,6 +39,7 @@ MouseArea {
 
         Resource {
             iconName: "planner_review"
+            userEnabled: Config.options.bar.chipDetails?.resCpu ?? true
             percentage: ResourceUsage.cpuUsage
             shown: Config.options.bar.resources.alwaysShowCpu || 
                 !(MprisController.activePlayer?.trackTitle?.length > 0) ||

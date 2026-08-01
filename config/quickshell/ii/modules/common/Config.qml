@@ -213,6 +213,13 @@ Singleton {
                 property string wallpaperPath: ""
                 property string thumbnailPath: ""
                 property bool hideWhenFullscreen: true
+                property string lockWall: ""            // fondo propio al bloquear
+                property bool centeredWallpaper: false
+                property bool centeredWallpaperOnlyWhenLocked: false
+                property string centeredWallpaperShape: "Cookie7Sided"
+                property int centeredWallpaperSize: 520
+                property string wallpaperTransition: "fade" // none | fade | slide | zoom | blink
+                property int wallpaperTransitionDuration: 1000
                 property JsonObject parallax: JsonObject {
                     property bool vertical: false
                     property bool autoVertical: false
@@ -223,7 +230,37 @@ Singleton {
                 }
             }
 
+            property JsonObject profile: JsonObject {
+                property string avatarPath: ""
+                property string avatarPicture: ""
+                property string descriptionText: "::distro::"
+                property string displayName: ""
+            }
+            property JsonObject custom: JsonObject {
+                property string distroIcon: ""
+                property bool colorizeIcon: true
+            }
+            property JsonObject hyprland: JsonObject {
+                property JsonObject general: JsonObject {
+                    property int gapsOut: 5
+                }
+                property JsonObject decoration: JsonObject {
+                    property int rounding: 22
+                }
+            }
             property JsonObject bar: JsonObject {
+                // PCPANELS-BEGIN (opciones que usa la barra de end4-pC)
+                property JsonObject layouts: JsonObject {
+                    property list<string> leftLayout: ["workspaces"]
+                    property list<string> middleLayout: ["clockWidget"]
+                    property list<string> rightLayout: ["systemIcons"]
+                }
+                property JsonObject divider: JsonObject {
+                    property string style: "rect"
+                    property int spacing: 20
+                }
+                property bool usePc: false          // <- topbar del fork on/off
+                // PCPANELS-END
                 property JsonObject autoHide: JsonObject {
                     property bool enable: false
                     property int hoverRegionWidth: 2
@@ -240,8 +277,35 @@ Singleton {
                 property string topLeftIcon: "spark" // Options: "distro" or any icon name in ~/.config/quickshell/ii/assets/icons
                 property bool showBackground: true
                 property bool verbose: true
+                property JsonObject chipDetails: JsonObject {
+                    property bool clockShowTime: true
+                    property bool clockShowDate: true
+                    property bool resRam: true
+                    property bool resSwap: true
+                    property bool resCpu: true
+                    property bool mediaHideWhenEmpty: false
+                }
+                property JsonObject barWidgets: JsonObject {
+                    property bool activeWindow: true
+                    property bool resources: true
+                    property bool media: true
+                    property bool workspaces: true
+                    property bool clock: true
+                    property bool utilButtons: true
+                    property bool battery: true
+                }
+                property JsonObject activeWindow: JsonObject {
+                    property bool showAppName: true
+                    property bool titleFullText: false   // true = sin recortar
+                    property int titleMaxChars: 40       // si titleFullText es false
+                    property int maxWidth: 320
+                }
                 property bool vertical: false
                 property JsonObject resources: JsonObject {
+                    property bool alwaysShowCpuTemp: false
+                    property bool alwaysShowDisk: false
+                    property bool alwaysShowRam: false
+                    property bool showValue: false
                     property bool alwaysShowSwap: true
                     property bool alwaysShowCpu: true
                     property int memoryWarningThreshold: 95
@@ -250,6 +314,7 @@ Singleton {
                 }
                 property list<string> screenList: [] // List of names, like "eDP-1", find out with 'hyprctl monitors' command
                 property JsonObject utilButtons: JsonObject {
+                    property bool showWallpaperToggle: false
                     property bool showScreenSnip: true
                     property bool showColorPicker: false
                     property bool showMicToggle: false
@@ -323,6 +388,7 @@ Singleton {
             }
 
             property JsonObject dock: JsonObject {
+                property bool showBackground: true
                 property bool enable: false
                 property bool monochromeIcons: true
                 property real height: 60
@@ -378,6 +444,7 @@ Singleton {
                     property bool enable: true
                     property real radius: 100
                     property real extraZoom: 1.1
+                    property int size: 20
                 }
                 property bool centerClock: true
                 property bool showLockedText: true
@@ -389,6 +456,9 @@ Singleton {
             }
 
             property JsonObject media: JsonObject {
+                    property int maxWidth: 280
+                    property int minWidth: 0
+                    property bool onlyTitle: false
                 // Attempt to remove dupes (the aggregator playerctl one and browsers' native ones when there's plasma browser integration)
                 property bool filterDuplicatePlayers: true
             }
@@ -496,6 +566,10 @@ Singleton {
             }
 
             property JsonObject sidebar: JsonObject {
+                property bool banner: false
+                property string bannerImage: ""
+                property string mediaPlayer: ""
+                property bool usePc: false          // <- sidebars del fork on/off
                 property bool keepRightSidebarLoaded: true
                 property JsonObject translator: JsonObject {
                     property bool enable: false
@@ -585,6 +659,9 @@ Singleton {
             
             property JsonObject wallpaperSelector: JsonObject {
                 property bool useSystemFileDialog: false
+                property int columns: 4
+                property bool closeAfterSelection: false
+                property int changeInterval: 0   // minutos; 0 = desactivado
             }
             
             property JsonObject windows: JsonObject {

@@ -8,6 +8,111 @@ ContentPage {
     forceWidth: true
 
     ContentSection {
+        icon: "autoplay"
+        title: Translation.tr("Wallpaper rotation")
+
+        ConfigSpinBox {
+            text: Translation.tr("Change every N minutes (0 = off)")
+            value: Config.options.wallpaperSelector.changeInterval
+            from: 0
+            to: 240
+            stepSize: 5
+            onValueChanged: {
+                Config.options.wallpaperSelector.changeInterval = value;
+            }
+        }
+    }
+
+    ContentSection {
+        icon: "shapes"
+        title: Translation.tr("Centered wallpaper")
+
+        ConfigSwitch {
+            buttonIcon: "crop_free"
+            text: Translation.tr("Show wallpaper inside a centered shape")
+            checked: Config.options.background.centeredWallpaper
+            onCheckedChanged: {
+                Config.options.background.centeredWallpaper = checked;
+            }
+        }
+
+        ConfigSwitch {
+            buttonIcon: "lock"
+            text: Translation.tr("Only when locked")
+            checked: Config.options.background.centeredWallpaperOnlyWhenLocked
+            onCheckedChanged: {
+                Config.options.background.centeredWallpaperOnlyWhenLocked = checked;
+            }
+        }
+
+        ConfigSpinBox {
+            text: Translation.tr("Shape size (px)")
+            value: Config.options.background.centeredWallpaperSize
+            from: 200
+            to: 1200
+            stepSize: 20
+            onValueChanged: {
+                Config.options.background.centeredWallpaperSize = value;
+            }
+        }
+    }
+
+    ContentSection {
+        icon: "wallpaper"
+        title: Translation.tr("Wallpaper selector")
+
+        ConfigSpinBox {
+            text: Translation.tr("Columns")
+            value: Config.options.wallpaperSelector.columns
+            from: 2
+            to: 8
+            stepSize: 1
+            onValueChanged: {
+                Config.options.wallpaperSelector.columns = value;
+            }
+        }
+
+        ConfigSwitch {
+            buttonIcon: "close"
+            text: Translation.tr("Close after selecting")
+            checked: Config.options.wallpaperSelector.closeAfterSelection
+            onCheckedChanged: {
+                Config.options.wallpaperSelector.closeAfterSelection = checked;
+            }
+        }
+    }
+
+    ContentSection {
+        icon: "animation"
+        title: Translation.tr("Wallpaper transition")
+
+        ConfigSelectionArray {
+            currentValue: Config.options.background.wallpaperTransition
+            onSelected: newValue => {
+                Config.options.background.wallpaperTransition = newValue;
+            }
+            options: [
+                { displayName: Translation.tr("None"),  icon: "block",        value: "none"  },
+                { displayName: Translation.tr("Fade"),  icon: "gradient",     value: "fade"  },
+                { displayName: Translation.tr("Slide"), icon: "drag_pan",     value: "slide" },
+                { displayName: Translation.tr("Zoom"),  icon: "zoom_out_map", value: "zoom"  },
+                { displayName: Translation.tr("Blink"), icon: "bolt",         value: "blink" }
+            ]
+        }
+
+        ConfigSpinBox {
+            text: Translation.tr("Duration (ms)")
+            value: Config.options.background.wallpaperTransitionDuration
+            from: 200
+            to: 3000
+            stepSize: 100
+            onValueChanged: {
+                Config.options.background.wallpaperTransitionDuration = value;
+            }
+        }
+    }
+
+    ContentSection {
         icon: "sync_alt"
         title: Translation.tr("Parallax")
 

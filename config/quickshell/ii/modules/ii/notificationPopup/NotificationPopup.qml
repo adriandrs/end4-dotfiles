@@ -22,7 +22,8 @@ Scope {
 
         anchors {
             top: true
-            right: true
+            right: (Config.options.notifications.position ?? "right") === "right"
+            left: (Config.options.notifications.position ?? "right") === "left"
             bottom: true
         }
 
@@ -38,7 +39,8 @@ Scope {
             anchors {
                 top: parent.top
                 bottom: parent.bottom
-                right: parent.right
+                right: (Config.options.notifications.position ?? "right") === "right" ? parent.right : undefined
+                left: (Config.options.notifications.position ?? "right") === "left" ? parent.left : undefined
                 rightMargin: 4
                 topMargin: 4
             }

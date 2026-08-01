@@ -1,3 +1,6 @@
+import qs.modules.ii.barMenu
+import qs.modules.pc
+import qs.modules.ii.desktopMenu
 import QtQuick
 import Quickshell
 
@@ -24,8 +27,11 @@ import qs.modules.ii.verticalBar
 import qs.modules.ii.wallpaperSelector
 
 Scope {
-    PanelLoader { extraCondition: !Config.options.bar.vertical; component: Bar {} }
+    PanelLoader { extraCondition: !Config.options.bar.vertical && !Config.options.bar.usePc; component: Bar {} }
+    PanelLoader { extraCondition: !Config.options.bar.vertical && Config.options.bar.usePc; component: PcBar {} }
     PanelLoader { component: Background {} }
+    PanelLoader { component: BarWidgetMenu {} }
+    PanelLoader { component: DesktopMenu {} }
     PanelLoader { component: Cheatsheet {} }
     PanelLoader { extraCondition: Config.options.dock.enable; component: Dock {} }
     PanelLoader { component: Lock {} }
@@ -40,8 +46,10 @@ Scope {
     PanelLoader { component: ScreenCorners {} }
     PanelLoader { component: ScreenTranslator {} }
     PanelLoader { component: SessionScreen {} }
-    PanelLoader { component: SidebarLeft {} }
-    PanelLoader { component: SidebarRight {} }
+    PanelLoader { extraCondition: !Config.options.sidebar.usePc; component: SidebarLeft {} }
+    PanelLoader { extraCondition: Config.options.sidebar.usePc; component: PcSidebarLeft {} }
+    PanelLoader { extraCondition: !Config.options.sidebar.usePc; component: SidebarRight {} }
+    PanelLoader { extraCondition: Config.options.sidebar.usePc; component: PcSidebarRight {} }
     PanelLoader { extraCondition: Config.options.bar.vertical; component: VerticalBar {} }
     PanelLoader { component: WallpaperSelector {} }
 }

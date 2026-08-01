@@ -24,8 +24,8 @@ LazyLoader {
         anchors.top: Config.options.bar.vertical || (!Config.options.bar.vertical && !Config.options.bar.bottom)
         anchors.bottom: !Config.options.bar.vertical && Config.options.bar.bottom
 
-        implicitWidth: popupBackground.implicitWidth + Appearance.sizes.elevationMargin * 2 + root.popupBackgroundMargin
-        implicitHeight: popupBackground.implicitHeight + Appearance.sizes.elevationMargin * 2 + root.popupBackgroundMargin
+        implicitWidth: popupBackground.implicitWidth + popupBackground.outerMargin * 2 + root.popupBackgroundMargin
+        implicitHeight: popupBackground.implicitHeight + popupBackground.outerMargin * 2 + root.popupBackgroundMargin
 
         mask: Region {
             item: popupBackground
@@ -61,16 +61,17 @@ LazyLoader {
         Rectangle {
             id: popupBackground
             readonly property real margin: 10
+            readonly property real outerMargin: 0
             anchors {
                 fill: parent
-                leftMargin: Appearance.sizes.elevationMargin + root.popupBackgroundMargin * (!popupWindow.anchors.left)
-                rightMargin: Appearance.sizes.elevationMargin + root.popupBackgroundMargin * (!popupWindow.anchors.right)
-                topMargin: Appearance.sizes.elevationMargin + root.popupBackgroundMargin * (!popupWindow.anchors.top)
-                bottomMargin: Appearance.sizes.elevationMargin + root.popupBackgroundMargin * (!popupWindow.anchors.bottom)
+                leftMargin: popupBackground.outerMargin + root.popupBackgroundMargin * (!popupWindow.anchors.left)
+                rightMargin: popupBackground.outerMargin + root.popupBackgroundMargin * (!popupWindow.anchors.right)
+                topMargin: popupBackground.outerMargin + root.popupBackgroundMargin * (!popupWindow.anchors.top)
+                bottomMargin: popupBackground.outerMargin + root.popupBackgroundMargin * (!popupWindow.anchors.bottom)
             }
             implicitWidth: root.contentItem.implicitWidth + margin * 2
             implicitHeight: root.contentItem.implicitHeight + margin * 2
-            color: Appearance.m3colors.m3surfaceContainer
+            color: Appearance.colors.colBackgroundSurfaceContainer
             radius: Appearance.rounding.small
             children: [root.contentItem]
 

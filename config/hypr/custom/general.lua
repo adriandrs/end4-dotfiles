@@ -130,3 +130,4 @@ hl.config({
         drag_threshold = 8
     }
 })
+hl.config({ dwindle = { force_split = 2 } })

@@ -12,6 +12,9 @@ PAIRS=(
     ".config/cava:config/cava"
     ".local/bin:local/bin"
     ".local/share/applications:local/share/applications"
+   ".local/share/hypr-tools:local/share/hypr-tools"
+   ".config/kitty:config/kitty"
+   ".config/fish:config/fish"
     ".config/autostart:config/autostart"
     ".config/systemd/user:config/systemd/user"
 )
@@ -37,12 +40,16 @@ for pair in "${PAIRS[@]}"; do
         --exclude='*.backup' \
         --exclude='*.backup-*' \
         --exclude='*.bak' \
+       --exclude='*.bak.*' \
+       --exclude='*.bak-*' \
         --exclude='*.old' \
         --exclude='*.tmp' \
         --exclude='*.save' \
         --exclude='*.save.*' \
         --exclude='*~' \
         --exclude='.git/' \
+       --exclude='.backups/' \
+       --exclude='steam-app-*.desktop' \
         --exclude='__pycache__/' \
         "$src/" "$dst/"
 

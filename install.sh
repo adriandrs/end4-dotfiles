@@ -3,7 +3,8 @@
 # Restores this dotfiles repository into the current user's home directory.
 #
 #   ./install.sh              copy configuration only
-#   ./install.sh --packages   also install packages from the exported lists
+#   ./install.sh --desktop-deps  install only essential desktop dependencies
+#   ./install.sh --packages      install every package from the exported lists
 #   ./install.sh --dry-run    print what would happen, change nothing
 #
 set -euo pipefail
@@ -12,11 +13,13 @@ REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BACKUP_DIR="$HOME/.config/dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
 
 INSTALL_PACKAGES=false
+INSTALL_DESKTOP_DEPS=false
 DRY_RUN=false
 
 for arg in "$@"; do
     case "$arg" in
-        --packages) INSTALL_PACKAGES=true ;;
+        --packages)     INSTALL_PACKAGES=true ;;
+       --desktop-deps) INSTALL_DESKTOP_DEPS=true ;;
         --dry-run)  DRY_RUN=true ;;
         -h|--help)
             sed -n '2,8p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
@@ -40,6 +43,9 @@ DIRS=(
     "config/systemd/user:.config/systemd/user"
     "local/bin:.local/bin"
     "local/share/applications:.local/share/applications"
+   "local/share/hypr-tools:.local/share/hypr-tools"
+   "config/kitty:.config/kitty"
+   "config/fish:.config/fish"
 )
 
 FILES=(
@@ -75,6 +81,71 @@ fi
 log "repository: $REPO_DIR"
 log "target:     $HOME"
 [ "$DRY_RUN" = true ] && log "mode:       dry run (nothing will be written)"
+
+# Essential packages required by these dotfiles.
+# This intentionally excludes browsers, IDEs, games and optional applications.
+DESKTOP_REPO_PACKAGES=(
+   git
+   rsync
+   hyprland
+   kitty
+   fish
+   quickshell
+   cava
+   fastfetch
+   btop
+   jq
+   socat
+   libnotify
+   desktop-file-utils
+   xdg-desktop-portal
+   xdg-desktop-portal-hyprland
+   polkit-gnome
+   networkmanager
+   grim
+   slurp
+   wl-clipboard
+   cliphist
+   brightnessctl
+   playerctl
+   pipewire
+   wireplumber
+   pavucontrol
+   nautilus
+   gnome-control-center
+   gnome-keyring
+   libsecret
+)
+
+install_desktop_dependencies() {
+   step "Installing essential desktop dependencies"
+
+   if ! command -v pacman >/dev/null 2>&1; then
+       echo "pacman not found; this installer requires an Arch-based system." >&2
+       exit 1
+   fi
+
+   local available=()
+   local missing=()
+
+   for package in "${DESKTOP_REPO_PACKAGES[@]}"; do
+       if pacman -Si "$package" >/dev/null 2>&1; then
+           available+=("$package")
+       else
+           missing+=("$package")
+       fi
+   done
+
+   if [ "${#available[@]}" -gt 0 ]; then
+       run sudo pacman -S --needed "${available[@]}"
+   fi
+
+   if [ "${#missing[@]}" -gt 0 ]; then
+       log "warning: packages unavailable in enabled repositories:"
+       printf '    %s\n' "${missing[@]}"
+       log "some may be AUR packages or may have changed name"
+   fi
+}
 
 # -------------------------------------------------------------- packages ----
 
@@ -237,6 +308,50 @@ else
     log "log into Hyprland to apply the configuration"
 fi
 
+step "Final checks"
+
+errors=0
+
+for command in hyprctl qs kitty fish jq socat; do
+   if command -v "$command" >/dev/null 2>&1; then
+       log "ok  command: $command"
+   else
+       log "warning: missing command: $command"
+       errors=$((errors + 1))
+   fi
+done
+
+if command -v hyprctl >/dev/null 2>&1 && hyprctl instances >/dev/null 2>&1; then
+   config_errors="$(hyprctl configerrors 2>/dev/null || true)"
+
+   if [ -n "$config_errors" ] && [ "$config_errors" != "no errors" ]; then
+       log "warning: Hyprland reported configuration errors:"
+       printf '%s\n' "$config_errors"
+       errors=$((errors + 1))
+   else
+       log "ok  Hyprland configuration"
+   fi
+fi
+
+if command -v systemctl >/dev/null 2>&1; then
+   failed_units="$(systemctl --user --failed --no-legend 2>/dev/null || true)"
+
+   if [ -n "$failed_units" ]; then
+       log "warning: failed user units:"
+       printf '%s\n' "$failed_units"
+       errors=$((errors + 1))
+   else
+       log "ok  systemd user units"
+   fi
+fi
+
 printf '\nDone.\n'
 [ "$needs_backup" = true ] && printf 'Previous configuration: %s\n' "$BACKUP_DIR"
+
+if [ "$errors" -gt 0 ]; then
+   printf 'Completed with %s warning(s). Review the output above.\n' "$errors"
+else
+   printf 'Installation completed without detected errors.\n'
+fi
+
 exit 0

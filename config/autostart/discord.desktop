@@ -1,9 +1,9 @@
 [Desktop Entry]
 Type=Application
-Exec=/home/ads/.config/discord/app-1.0.150/Discord
+Exec=discord --start-minimized
 Hidden=false
 NoDisplay=false
 Name=Discord
-Icon=/home/ads/.config/discord/app-1.0.150/discord.png
+Icon=discord
 Comment=Text and voice chat for gamers.
 X-GNOME-Autostart-enabled=true

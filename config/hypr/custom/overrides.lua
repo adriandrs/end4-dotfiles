@@ -3,7 +3,7 @@
 -- ~/.config/illogical-impulse/config.json (appearance.transparency)
 hl.config({
   general = {
-    gaps_in = 2,
+    gaps_in = 3,
     gaps_out = 10,
   },
   decoration = {

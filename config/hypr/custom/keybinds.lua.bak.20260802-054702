@@ -5,4 +5,3 @@ require("custom.binds-mouse")
 require("custom.binds-minimize")
 require("custom.binds-workspace")
 require("custom.binds-window")
-
